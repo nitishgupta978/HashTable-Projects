@@ -1,10 +1,28 @@
 package com.bridgelabz.in;
+
+import java.util.ArrayList;
+
 public class Implementation<K, V> {
 	Node head;
     Node tail;
+    private final int numOfBuckets;
+    ArrayList<Node<K,V>> myBucketArray;
+
+    public Implementation() {
+        this.numOfBuckets = 20;                     
+        this.myBucketArray = new ArrayList();
+        for (int i = 0; i < numOfBuckets; i++)
+            this.myBucketArray.add(null);
+    }
 
     public void add(K key, V value) {
-        Node<K, V> myNode = (Node<K, V>) searchNode(key);
+        int index = this.getBucketIndex(key);
+        Node<K,V> myNode= this.myBucketArray.get(index);
+        if(myNode == null) {
+            myNode = new Node(key , value);
+            this.myBucketArray.set(index, myNode);
+        }
+        myNode = (Node<K, V>) searchNode(key);
         if(myNode == null) {
             myNode = new Node(key , value);
             this.append(myNode);
@@ -26,7 +44,7 @@ public class Implementation<K, V> {
         }
     }
 
-    
+   
     public Node<K, V> searchNode(K data) {
         Node currentNode = head;
         int position = 0;
@@ -42,8 +60,19 @@ public class Implementation<K, V> {
 
     
     public V get(K word) {
+        int index = this.getBucketIndex(word);
+        if(this.myBucketArray.get(index) == null)
+            return null;
         Node<K, V> myMapNode = searchNode(word);
         return (myMapNode == null) ? null : myMapNode.getValue();
+    }
+
+    
+    private int getBucketIndex(K word) {
+        int hashCode = Math.abs(word.hashCode());
+        int index = hashCode % numOfBuckets;
+        
+        return index;
     }
 
     
