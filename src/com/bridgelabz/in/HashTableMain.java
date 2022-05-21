@@ -5,10 +5,11 @@ public class HashTableMain {
         Implementation<String, Integer> hashImpl = new Implementation();
         String message = "Paranoids are not paranoid because they are paranoid but " +
                 "because they keep putting themselves deliberately into paranoid avoidable situations";
+
         String[] messageArray = message.toLowerCase().split(" ");
 
         for(String word: messageArray) {
-           
+            
             Integer value =  hashImpl.get(word);
            
             if( value == null)
@@ -17,7 +18,10 @@ public class HashTableMain {
                 
                 value = value + 1;
             hashImpl.add(word , value);
+            System.out.println("Value = "+value);
         }
+        System.out.println(hashImpl);
+        hashImpl.remove("avoidable");
         System.out.println(hashImpl);
     }
 }
